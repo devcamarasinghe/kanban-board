@@ -6,7 +6,7 @@ import { Icons } from '@/components/ui/Icons';
 interface NavItem {
   id: string;
   label: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
   isActive?: boolean;
   hasNotification?: boolean;
 }
