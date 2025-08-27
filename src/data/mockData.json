@@ -1,0 +1,78 @@
+{
+  "users": [
+    {
+      "id": "user-1",
+      "name": "John Doe",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
+      "role": "Senior Developer"
+    },
+    {
+      "id": "user-2",
+      "name": "Sarah Smith",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+      "role": "UI Designer"
+    },
+    {
+      "id": "user-3",
+      "name": "Mike Johnson",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Mike",
+      "role": "Product Manager"
+    },
+    {
+      "id": "user-4",
+      "name": "Emily Chen",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
+      "role": "QA Engineer"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "User Interview",
+      "description": "Conduct user interviews for new feature",
+      "status": "todo",
+      "assignees": ["user-1"],
+      "priority": "high",
+      "comments": 2,
+      "attachments": 0,
+      "dueDate": "Due Tomorrow",
+      "createdAt": "2025-01-04"
+    },
+    {
+      "id": "task-2",
+      "title": "UI Design",
+      "description": "Create mockups for dashboard",
+      "status": "inprogress",
+      "assignees": ["user-2", "user-3"],
+      "priority": "high",
+      "comments": 3,
+      "attachments": 2,
+      "dueDate": "Due Tomorrow",
+      "createdAt": "2025-01-03"
+    },
+    {
+      "id": "task-3",
+      "title": "Design System",
+      "description": "Establish design system components",
+      "status": "todo",
+      "assignees": ["user-2"],
+      "priority": "medium",
+      "comments": 0,
+      "attachments": 5,
+      "dueDate": "3 Months",
+      "createdAt": "2025-01-02"
+    },
+    {
+      "id": "task-4",
+      "title": "Check Clients Feedback",
+      "description": "Review and analyze client feedback",
+      "status": "inprogress",
+      "assignees": ["user-3", "user-4", "user-1"],
+      "priority": "medium",
+      "comments": 5,
+      "attachments": 2,
+      "dueDate": "Due 22 April, 2022",
+      "createdAt": "2025-01-01"
+    }
+  ]
+}
