@@ -23,6 +23,12 @@
       "name": "Emily Chen",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
       "role": "QA Engineer"
+    },
+    {
+      "id": "user-5",
+      "name": "Alex Wilson",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+      "role": "Backend Developer"
     }
   ],
   "tasks": [
@@ -40,18 +46,6 @@
     },
     {
       "id": "task-2",
-      "title": "UI Design",
-      "description": "Create mockups for dashboard",
-      "status": "inprogress",
-      "assignees": ["user-2", "user-3"],
-      "priority": "high",
-      "comments": 3,
-      "attachments": 2,
-      "dueDate": "Due Tomorrow",
-      "createdAt": "2025-01-03"
-    },
-    {
-      "id": "task-3",
       "title": "Design System",
       "description": "Establish design system components",
       "status": "todo",
@@ -63,15 +57,159 @@
       "createdAt": "2025-01-02"
     },
     {
+      "id": "task-3",
+      "title": "Speech",
+      "description": "Prepare presentation for stakeholders",
+      "status": "todo",
+      "assignees": ["user-3", "user-4"],
+      "priority": "low",
+      "comments": 1,
+      "attachments": 3,
+      "dueDate": "Stream",
+      "createdAt": "2025-01-03"
+    },
+    {
       "id": "task-4",
+      "title": "Wireframe",
+      "description": "Create low-fidelity wireframes",
+      "status": "todo",
+      "assignees": ["user-2", "user-1", "user-5"],
+      "priority": "high",
+      "comments": 4,
+      "attachments": 0,
+      "dueDate": "Due",
+      "createdAt": "2025-01-01"
+    },
+    {
+      "id": "task-5",
+      "title": "UI Design",
+      "description": "Create high-fidelity mockups",
+      "status": "inprogress",
+      "assignees": ["user-2", "user-3"],
+      "priority": "high",
+      "comments": 3,
+      "attachments": 2,
+      "dueDate": "Due Tomorrow",
+      "createdAt": "2025-01-03"
+    },
+    {
+      "id": "task-6",
       "title": "Check Clients Feedback",
-      "description": "Review and analyze client feedback",
+      "description": "Review and analyze client feedback from last meeting",
       "status": "inprogress",
       "assignees": ["user-3", "user-4", "user-1"],
       "priority": "medium",
       "comments": 5,
       "attachments": 2,
       "dueDate": "Due 22 April, 2022",
+      "createdAt": "2025-01-01"
+    },
+    {
+      "id": "task-7",
+      "title": "Copyright",
+      "description": "Review copyright and legal requirements",
+      "status": "inprogress",
+      "assignees": ["user-5"],
+      "priority": "low",
+      "comments": 2,
+      "attachments": 4,
+      "dueDate": "Due 22 April, 2022",
+      "createdAt": "2025-01-02"
+    },
+    {
+      "id": "task-8",
+      "title": "Filter sorting",
+      "description": "Implement advanced filtering and sorting features",
+      "status": "inprogress",
+      "assignees": ["user-1", "user-4"],
+      "priority": "medium",
+      "comments": 6,
+      "attachments": 0,
+      "dueDate": "",
+      "createdAt": "2025-01-04"
+    },
+    {
+      "id": "task-9",
+      "title": "Prototype",
+      "description": "Build interactive prototype for user testing",
+      "status": "approved",
+      "assignees": ["user-2", "user-1", "user-3"],
+      "priority": "high",
+      "comments": 10,
+      "attachments": 3,
+      "dueDate": "343",
+      "createdAt": "2025-01-02"
+    },
+    {
+      "id": "task-10",
+      "title": "Detail Page",
+      "description": "Design and implement product detail page",
+      "status": "approved",
+      "assignees": ["user-2", "user-5", "user-1"],
+      "priority": "medium",
+      "comments": 8,
+      "attachments": 5,
+      "dueDate": "26",
+      "createdAt": "2025-01-03"
+    },
+    {
+      "id": "task-11",
+      "title": "Animation preloaders",
+      "description": "Create smooth loading animations",
+      "status": "approved",
+      "assignees": ["user-2", "user-4"],
+      "priority": "low",
+      "comments": 4,
+      "attachments": 8,
+      "dueDate": "343",
+      "createdAt": "2025-01-01"
+    },
+    {
+      "id": "task-12",
+      "title": "Sorting category",
+      "description": "Implement category-based sorting functionality",
+      "status": "approved",
+      "assignees": ["user-1", "user-3", "user-5"],
+      "priority": "medium",
+      "comments": 0,
+      "attachments": 2,
+      "dueDate": "",
+      "createdAt": "2025-01-04"
+    },
+    {
+      "id": "task-13",
+      "title": "Group Managment",
+      "description": "Setup user group management system",
+      "status": "reject",
+      "assignees": ["user-3"],
+      "priority": "high",
+      "comments": 12,
+      "attachments": 0,
+      "dueDate": "129",
+      "createdAt": "2025-01-02"
+    },
+    {
+      "id": "task-14",
+      "title": "Design System",
+      "description": "Update design system with new components",
+      "status": "reject",
+      "assignees": ["user-2"],
+      "priority": "high",
+      "comments": 6,
+      "attachments": 5,
+      "dueDate": "Group Call",
+      "createdAt": "2025-01-03"
+    },
+    {
+      "id": "task-15",
+      "title": "Slider controls",
+      "description": "Add touch-enabled slider controls",
+      "status": "reject",
+      "assignees": ["user-1", "user-4", "user-5"],
+      "priority": "low",
+      "comments": 9,
+      "attachments": 11,
+      "dueDate": "2 Reports",
       "createdAt": "2025-01-01"
     }
   ]

@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Icons } from '@/components/ui/Icons';
 
 interface NavItem {
   id: string;
   label: string;
-  icon: string;
+  icon: JSX.Element;
   isActive?: boolean;
   hasNotification?: boolean;
 }
@@ -14,11 +15,11 @@ const Sidebar = () => {
   const [activeItem, setActiveItem] = useState('boards');
 
   const navItems: NavItem[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: '□', isActive: false },
-    { id: 'boards', label: 'Boards', icon: '▦', isActive: true },
-    { id: 'messages', label: 'Messages', icon: '✉', isActive: false, hasNotification: true },
-    { id: 'calendar', label: 'Calendar', icon: '📅', isActive: false },
-    { id: 'team', label: 'Team members', icon: '👥', isActive: false },
+    { id: 'dashboard', label: 'Dashboard', icon: Icons.dashboard },
+    { id: 'boards', label: 'Boards', icon: Icons.boards, isActive: true },
+    { id: 'messages', label: 'Messages', icon: Icons.messages, hasNotification: true },
+    { id: 'calendar', label: 'Calendar', icon: Icons.calendar },
+    { id: 'team', label: 'Team members', icon: Icons.team },
   ];
 
   return (
@@ -35,14 +36,16 @@ const Sidebar = () => {
 
       {/* Root folder selector */}
       <div className="px-4 py-3 border-b border-gray-200">
-        <button className="w-full flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+        <button className="w-full flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-colors">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm">RF</span>
+              <span className="text-white text-sm font-semibold">RF</span>
             </div>
             <span className="text-sm font-medium">Root folder</span>
           </div>
-          <span className="text-gray-400">▼</span>
+          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </button>
       </div>
 
@@ -53,18 +56,20 @@ const Sidebar = () => {
             <button
               key={item.id}
               onClick={() => setActiveItem(item.id)}
-              className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
+              className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
                 item.id === activeItem
-                  ? 'bg-gray-100 text-gray-900'
+                  ? 'bg-gray-100 text-gray-900 shadow-sm'
                   : 'text-gray-600 hover:bg-gray-50'
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="text-lg">{item.icon}</span>
+                <span className={item.id === activeItem ? 'text-blue-500' : 'text-gray-500'}>
+                  {item.icon}
+                </span>
                 <span className="text-sm font-medium">{item.label}</span>
               </div>
               {item.hasNotification && (
-                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
               )}
             </button>
           ))}
@@ -73,16 +78,16 @@ const Sidebar = () => {
 
       {/* Support section */}
       <div className="p-4 border-t border-gray-200">
-        <button className="w-full flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-          <span className="text-lg">?</span>
+        <button className="w-full flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+          <span className="text-gray-500">{Icons.support}</span>
           <span className="text-sm font-medium">Support</span>
         </button>
       </div>
 
       {/* Logout */}
       <div className="p-4 border-t border-gray-200">
-        <button className="w-full flex items-center gap-3 p-3 text-gray-900 bg-gray-100 rounded-lg">
-          <span className="text-lg">⚙</span>
+        <button className="w-full flex items-center gap-3 p-3 text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+          <span className="text-gray-700">{Icons.logout}</span>
           <span className="text-sm font-medium">Logout</span>
         </button>
       </div>

@@ -4,6 +4,7 @@ import React from 'react';
 import { Task, User } from '@/types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { Icons } from '@/components/ui/Icons';
 
 interface TaskCardProps {
   task: Task;
@@ -31,7 +32,7 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'text-red-500';
-      case 'medium': return 'text-yellow-500';
+      case 'medium': return 'text-orange-500';
       case 'low': return 'text-green-500';
       default: return 'text-gray-500';
     }
@@ -52,8 +53,8 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`bg-white rounded-lg p-4 shadow-sm border border-gray-200 cursor-move hover:shadow-md transition-shadow ${
-        isDragging ? 'shadow-lg ring-2 ring-blue-500' : ''
+      className={`bg-white rounded-lg p-4 shadow-sm border border-gray-100 cursor-move hover:shadow-md transition-all duration-200 ${
+        isDragging ? 'shadow-xl ring-2 ring-blue-400 ring-opacity-50 scale-105' : ''
       }`}
     >
       {/* Priority indicator */}
@@ -66,46 +67,48 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
       
       {/* Task Description */}
       {task.description && (
-        <p className="text-sm text-gray-600 mb-3">{task.description}</p>
+        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{task.description}</p>
       )}
 
       {/* Assignees */}
-      <div className="flex -space-x-2 mb-3">
-        {taskUsers.slice(0, 3).map((user) => (
-          <div
-            key={user.id}
-            className="w-7 h-7 rounded-full border-2 border-white bg-gray-300 flex items-center justify-center overflow-hidden"
-            title={user.name}
-          >
-            {user.avatar ? (
-              <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-xs font-medium text-gray-700">
-                {user.name.split(' ').map(n => n[0]).join('')}
-              </span>
-            )}
-          </div>
-        ))}
-        {taskUsers.length > 3 && (
-          <div className="w-7 h-7 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center">
-            <span className="text-xs">+{taskUsers.length - 3}</span>
-          </div>
-        )}
-      </div>
+      {taskUsers.length > 0 && (
+        <div className="flex -space-x-2 mb-3">
+          {taskUsers.slice(0, 3).map((user) => (
+            <div
+              key={user.id}
+              className="w-7 h-7 rounded-full border-2 border-white bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center overflow-hidden hover:z-10 hover:scale-110 transition-transform"
+              title={user.name}
+            >
+              {user.avatar ? (
+                <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-xs font-medium text-white">
+                  {user.name.split(' ').map(n => n[0]).join('')}
+                </span>
+              )}
+            </div>
+          ))}
+          {taskUsers.length > 3 && (
+            <div className="w-7 h-7 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center hover:scale-110 transition-transform">
+              <span className="text-xs font-medium text-gray-600">+{taskUsers.length - 3}</span>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Task Meta */}
       <div className="flex items-center justify-between text-xs text-gray-500">
         <div className="flex items-center gap-3">
           {/* Comments */}
           <div className="flex items-center gap-1">
-            <span>💬</span>
+            <span className="text-gray-400">{Icons.comment}</span>
             <span>{task.comments}</span>
           </div>
           
           {/* Attachments */}
           {task.attachments > 0 && (
             <div className="flex items-center gap-1">
-              <span>📎</span>
+              <span className="text-gray-400">{Icons.attachment}</span>
               <span>{task.attachments}</span>
             </div>
           )}
@@ -113,7 +116,13 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
 
         {/* Due Date */}
         {task.dueDate && (
-          <span className="text-gray-400">📅 {task.dueDate}</span>
+          <span className="text-gray-400 flex items-center gap-1">
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" strokeWidth="2" rx="2" />
+              <line x1="3" y1="10" x2="21" y2="10" strokeWidth="2" />
+            </svg>
+            <span>{task.dueDate}</span>
+          </span>
         )}
       </div>
     </div>
