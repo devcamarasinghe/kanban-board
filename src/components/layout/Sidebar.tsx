@@ -1,0 +1,93 @@
+'use client';
+
+import React, { useState } from 'react';
+
+interface NavItem {
+  id: string;
+  label: string;
+  icon: string;
+  isActive?: boolean;
+  hasNotification?: boolean;
+}
+
+const Sidebar = () => {
+  const [activeItem, setActiveItem] = useState('boards');
+
+  const navItems: NavItem[] = [
+    { id: 'dashboard', label: 'Dashboard', icon: '□', isActive: false },
+    { id: 'boards', label: 'Boards', icon: '▦', isActive: true },
+    { id: 'messages', label: 'Messages', icon: '✉', isActive: false, hasNotification: true },
+    { id: 'calendar', label: 'Calendar', icon: '📅', isActive: false },
+    { id: 'team', label: 'Team members', icon: '👥', isActive: false },
+  ];
+
+  return (
+    <div className="w-64 bg-white h-screen border-r border-gray-200 flex flex-col">
+      {/* Logo/Brand */}
+      <div className="p-6 border-b border-gray-200">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold">B</span>
+          </div>
+          <span className="font-semibold text-gray-800">Board App</span>
+        </div>
+      </div>
+
+      {/* Root folder selector */}
+      <div className="px-4 py-3 border-b border-gray-200">
+        <button className="w-full flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm">RF</span>
+            </div>
+            <span className="text-sm font-medium">Root folder</span>
+          </div>
+          <span className="text-gray-400">▼</span>
+        </button>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 px-4 py-4">
+        <div className="space-y-1">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveItem(item.id)}
+              className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
+                item.id === activeItem
+                  ? 'bg-gray-100 text-gray-900'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-lg">{item.icon}</span>
+                <span className="text-sm font-medium">{item.label}</span>
+              </div>
+              {item.hasNotification && (
+                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+              )}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      {/* Support section */}
+      <div className="p-4 border-t border-gray-200">
+        <button className="w-full flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+          <span className="text-lg">?</span>
+          <span className="text-sm font-medium">Support</span>
+        </button>
+      </div>
+
+      {/* Logout */}
+      <div className="p-4 border-t border-gray-200">
+        <button className="w-full flex items-center gap-3 p-3 text-gray-900 bg-gray-100 rounded-lg">
+          <span className="text-lg">⚙</span>
+          <span className="text-sm font-medium">Logout</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;
