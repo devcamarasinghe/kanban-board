@@ -23,8 +23,8 @@ const KanbanBoard = () => {
     filteredTasks, 
     users, 
     updateTaskStatus, 
-    reorderTasks, 
-    initializeTasks 
+    reorderTasks,
+    initializeTasks
   } = useTaskStore();
   
   const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -59,33 +59,29 @@ const KanbanBoard = () => {
     const taskId = active.id as string;
     const overId = over.id as string;
 
-    // Check if dropped on a column
     if (statuses.includes(overId as TaskStatus)) {
       updateTaskStatus(taskId, overId as TaskStatus);
     } else {
-      // Dropped on another task - reorder within the same column
       const activeTask = filteredTasks.find(t => t.id === taskId);
       const overTask = filteredTasks.find(t => t.id === overId);
       
-      if (activeTask && overTask && activeTask.status === overTask.status) {
-        const columnTasks = getTasksByStatus(filteredTasks, activeTask.status);
-        const activeIndex = columnTasks.findIndex(t => t.id === taskId);
-        const overIndex = columnTasks.findIndex(t => t.id === overId);
-        
-        if (activeIndex !== overIndex) {
-          const reorderedColumnTasks = arrayMove(columnTasks, activeIndex, overIndex);
+      if (activeTask && overTask) {
+        if (activeTask.status === overTask.status) {
+          const columnTasks = getTasksByStatus(filteredTasks, activeTask.status);
+          const activeIndex = columnTasks.findIndex(t => t.id === taskId);
+          const overIndex = columnTasks.findIndex(t => t.id === overId);
           
-          // Merge reordered tasks back into the full task list
-          const updatedTasks = filteredTasks.map(task => {
-            const reorderedTask = reorderedColumnTasks.find(t => t.id === task.id);
-            return reorderedTask || task;
-          });
-          
-          reorderTasks(updatedTasks);
+          if (activeIndex !== overIndex) {
+            const reorderedColumnTasks = arrayMove(columnTasks, activeIndex, overIndex);
+            const updatedTasks = filteredTasks.map(task => {
+              const reorderedTask = reorderedColumnTasks.find(t => t.id === task.id);
+              return reorderedTask || task;
+            });
+            reorderTasks(updatedTasks);
+          }
+        } else {
+          updateTaskStatus(taskId, overTask.status);
         }
-      } else if (activeTask && overTask) {
-        // Dropped on a task in a different column
-        updateTaskStatus(taskId, overTask.status);
       }
     }
     
@@ -99,7 +95,7 @@ const KanbanBoard = () => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex gap-6 overflow-x-auto pb-4">
+      <div className="flex gap-4 overflow-x-auto pb-4 px-2">
         {statuses.map((status) => (
           <BoardColumn
             key={status}
