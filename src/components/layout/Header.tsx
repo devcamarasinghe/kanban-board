@@ -2,7 +2,7 @@
 
 import React from 'react';
 import useTaskStore from '@/store/useTaskStore';
-import { Icons } from '@/components/ui/Icons';
+import { Plus, Search, Bell, ChevronDown } from 'lucide-react';
 
 const Header = () => {
   const { setSearchQuery, searchQuery } = useTaskStore();
@@ -28,7 +28,7 @@ const Header = () => {
         <div className="flex items-center gap-4">
 
           <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm hover:shadow-md">
-            {Icons.plus}
+            <Plus size={20} />
             <span className="text-sm font-medium">Create new board</span>
           </button>
 
@@ -42,13 +42,13 @@ const Header = () => {
               className="w-64 px-4 py-2 pl-10 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              {Icons.search}
+              <Search size={20} />
             </span>
           </div>
 
 
           <button className="relative p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
-            {Icons.bell}
+            <Bell size={20} />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
 
@@ -57,9 +57,7 @@ const Header = () => {
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-medium">JD</span>
             </div>
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-            </svg>
+            <ChevronDown size={16} className="text-gray-400" />
           </div>
         </div>
       </div>

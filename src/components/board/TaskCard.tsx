@@ -4,7 +4,7 @@ import React from 'react';
 import { Task, User } from '@/types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Icons } from '@/components/ui/Icons';
+import { MessageCircle, Paperclip, Calendar } from 'lucide-react';
 
 interface TaskCardProps {
   task: Task;
@@ -104,13 +104,13 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
         <div className="flex items-center gap-3">
 
           <div className="flex items-center gap-1">
-            <span className="text-gray-400">{Icons.comment}</span>
+            <MessageCircle size={14} className="text-gray-400" />
             <span>{task.comments}</span>
           </div>
 
           {task.attachments > 0 && (
             <div className="flex items-center gap-1">
-              <span className="text-gray-400">{Icons.attachment}</span>
+              <Paperclip size={14} className="text-gray-400" />
               <span>{task.attachments}</span>
             </div>
           )}
@@ -118,10 +118,7 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
 
         {task.dueDate && (
           <span className="text-gray-400 flex items-center gap-1">
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <rect x="3" y="4" width="18" height="18" strokeWidth="2" rx="2" />
-              <line x1="3" y1="10" x2="21" y2="10" strokeWidth="2" />
-            </svg>
+            <Calendar size={14} />
             <span>{task.dueDate}</span>
           </span>
         )}
