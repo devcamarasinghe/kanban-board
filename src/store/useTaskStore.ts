@@ -10,8 +10,7 @@ interface TaskStore {
   isLoading: boolean;
   error: string | null;
   isInitialized: boolean;
-  
-  // Actions
+
   initializeTasks: () => Promise<void>;
   updateTaskStatus: (taskId: string, newStatus: TaskStatus) => Promise<void>;
   setSearchQuery: (query: string) => void;
@@ -30,50 +29,45 @@ const useTaskStore = create<TaskStore>((set, get) => ({
 
   initializeTasks: async () => {
     if (get().isInitialized) return;
-    
+
     set({ isLoading: true, error: null });
-    
+
     try {
-      // First check localStorage for cached data
-      const cachedTasks = typeof window !== 'undefined' 
-        ? localStorage.getItem('kanban-tasks') 
+      const cachedTasks = typeof window !== 'undefined'
+        ? localStorage.getItem('kanban-tasks')
         : null;
-      
+
       if (cachedTasks) {
-        // Use cached data immediately for better UX
         const parsed = JSON.parse(cachedTasks);
-        set({ 
-          tasks: parsed, 
+        set({
+          tasks: parsed,
           filteredTasks: parsed,
-          isInitialized: true 
+          isInitialized: true
         });
       }
-      
-      // Fetch fresh data from "API"
+
       const [fetchedTasks, fetchedUsers] = await Promise.all([
         api.fetchTasks(),
         api.fetchUsers()
       ]);
-      
-      // If we have cached data, check if it's different
+
       const tasksToUse = cachedTasks ? JSON.parse(cachedTasks) : fetchedTasks;
-      
-      set({ 
+
+      set({
         tasks: tasksToUse,
         users: fetchedUsers,
         filteredTasks: tasksToUse,
         isLoading: false,
         isInitialized: true
       });
-      
-      // Save to localStorage
+
       if (typeof window !== 'undefined' && !cachedTasks) {
         localStorage.setItem('kanban-tasks', JSON.stringify(fetchedTasks));
       }
     } catch (error) {
-      set({ 
+      set({
         error: 'Failed to load tasks. Please refresh the page.',
-        isLoading: false 
+        isLoading: false
       });
       console.error('Failed to initialize tasks:', error);
     }
@@ -81,43 +75,39 @@ const useTaskStore = create<TaskStore>((set, get) => ({
 
   updateTaskStatus: async (taskId: string, newStatus: TaskStatus) => {
     const previousTasks = get().tasks;
-    
-    // Optimistic update
+
     set((state) => {
       const updatedTasks = state.tasks.map((task) =>
         task.id === taskId ? { ...task, status: newStatus } : task
       );
-      
-      const filtered = state.searchQuery 
-        ? updatedTasks.filter(task => 
-            task.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-            task.description?.toLowerCase().includes(state.searchQuery.toLowerCase())
-          )
+
+      const filtered = state.searchQuery
+        ? updatedTasks.filter(task =>
+          task.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+          task.description?.toLowerCase().includes(state.searchQuery.toLowerCase())
+        )
         : updatedTasks;
-      
-      // Save to localStorage
+
       if (typeof window !== 'undefined') {
         localStorage.setItem('kanban-tasks', JSON.stringify(updatedTasks));
       }
-      
-      return { 
+
+      return {
         tasks: updatedTasks,
-        filteredTasks: filtered 
+        filteredTasks: filtered
       };
     });
-    
+
     try {
-      // Call mock API
       await api.updateTaskStatus(taskId, newStatus);
     } catch (error) {
-      // Rollback on error
       set((state) => ({
         tasks: previousTasks,
-        filteredTasks: state.searchQuery 
-          ? previousTasks.filter(task => 
-              task.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-              task.description?.toLowerCase().includes(state.searchQuery.toLowerCase())
-            )
+        filteredTasks: state.searchQuery
+          ? previousTasks.filter(task =>
+            task.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+            task.description?.toLowerCase().includes(state.searchQuery.toLowerCase())
+          )
           : previousTasks,
         error: 'Failed to update task status'
       }));
@@ -135,33 +125,30 @@ const useTaskStore = create<TaskStore>((set, get) => ({
       if (!state.searchQuery) {
         return { filteredTasks: state.tasks };
       }
-      
+
       const filtered = state.tasks.filter((task) =>
         task.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
         task.description?.toLowerCase().includes(state.searchQuery.toLowerCase())
       );
-      
+
       return { filteredTasks: filtered };
     });
   },
 
   reorderTasks: async (tasks: Task[]) => {
     const previousTasks = get().tasks;
-    
-    // Optimistic update
+
     set({ tasks, filteredTasks: tasks });
-    
+
     if (typeof window !== 'undefined') {
       localStorage.setItem('kanban-tasks', JSON.stringify(tasks));
     }
-    
+
     try {
-      // Call mock API
       await api.reorderTasks(tasks);
     } catch (error) {
-      // Rollback on error
-      set({ 
-        tasks: previousTasks, 
+      set({
+        tasks: previousTasks,
         filteredTasks: previousTasks,
         error: 'Failed to reorder tasks'
       });
