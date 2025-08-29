@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Icons } from '@/components/ui/Icons';
+import { LayoutDashboard, Trello, MessageCircle, Calendar, Users, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
 
 interface NavItem {
   id: string;
@@ -15,11 +15,11 @@ const Sidebar = () => {
   const [activeItem, setActiveItem] = useState('boards');
 
   const navItems: NavItem[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: Icons.dashboard },
-    { id: 'boards', label: 'Boards', icon: Icons.boards, isActive: true },
-    { id: 'messages', label: 'Messages', icon: Icons.messages, hasNotification: true },
-    { id: 'calendar', label: 'Calendar', icon: Icons.calendar },
-    { id: 'team', label: 'Team members', icon: Icons.team },
+    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
+    { id: 'boards', label: 'Boards', icon: <Trello size={20} />, isActive: true },
+    { id: 'messages', label: 'Messages', icon: <MessageCircle size={20} />, hasNotification: true },
+    { id: 'calendar', label: 'Calendar', icon: <Calendar size={20} /> },
+    { id: 'team', label: 'Team members', icon: <Users size={20} /> },
   ];
 
   return (
@@ -43,9 +43,7 @@ const Sidebar = () => {
             </div>
             <span className="text-sm font-medium">Root folder</span>
           </div>
-          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-          </svg>
+          <ChevronDown size={16} className="text-gray-400" />
         </button>
       </div>
 
@@ -78,7 +76,7 @@ const Sidebar = () => {
 
       <div className="p-4 border-t border-gray-200">
         <button className="w-full flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
-          <span className="text-gray-500">{Icons.support}</span>
+          <HelpCircle size={20} className="text-gray-500" />
           <span className="text-sm font-medium">Support</span>
         </button>
       </div>
@@ -86,7 +84,7 @@ const Sidebar = () => {
 
       <div className="p-4 border-t border-gray-200">
         <button className="w-full flex items-center gap-3 p-3 text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-          <span className="text-gray-700">{Icons.logout}</span>
+          <LogOut size={20} className="text-gray-700" />
           <span className="text-sm font-medium">Logout</span>
         </button>
       </div>
