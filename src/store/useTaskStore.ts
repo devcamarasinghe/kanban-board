@@ -1,60 +1,93 @@
 import { create } from 'zustand';
 import { Task, User, TaskStatus } from '@/types';
-import mockData from '@/data/mockData.json';
+import { api } from '@/lib/api';
 
 interface TaskStore {
   tasks: Task[];
   users: User[];
   searchQuery: string;
   filteredTasks: Task[];
+  isLoading: boolean;
+  error: string | null;
+  isInitialized: boolean;
   
   // Actions
-  initializeTasks: () => void;
-  updateTaskStatus: (taskId: string, newStatus: TaskStatus) => void;
+  initializeTasks: () => Promise<void>;
+  updateTaskStatus: (taskId: string, newStatus: TaskStatus) => Promise<void>;
   setSearchQuery: (query: string) => void;
   filterTasks: () => void;
-  reorderTasks: (tasks: Task[]) => void;
-  saveToLocalStorage: () => void;
-  loadFromLocalStorage: () => void;
+  reorderTasks: (tasks: Task[]) => Promise<void>;
 }
 
 const useTaskStore = create<TaskStore>((set, get) => ({
   tasks: [],
-  users: mockData.users as User[],
+  users: [],
   searchQuery: '',
   filteredTasks: [],
+  isLoading: false,
+  error: null,
+  isInitialized: false,
 
-  initializeTasks: () => {
-    // First try to load from localStorage
-    const stored = localStorage.getItem('kanban-tasks');
-    if (stored) {
-      const parsedTasks = JSON.parse(stored);
+  initializeTasks: async () => {
+    if (get().isInitialized) return;
+    
+    set({ isLoading: true, error: null });
+    
+    try {
+      // First check localStorage for cached data
+      const cachedTasks = typeof window !== 'undefined' 
+        ? localStorage.getItem('kanban-tasks') 
+        : null;
+      
+      if (cachedTasks) {
+        // Use cached data immediately for better UX
+        const parsed = JSON.parse(cachedTasks);
+        set({ 
+          tasks: parsed, 
+          filteredTasks: parsed,
+          isInitialized: true 
+        });
+      }
+      
+      // Fetch fresh data from "API"
+      const [fetchedTasks, fetchedUsers] = await Promise.all([
+        api.fetchTasks(),
+        api.fetchUsers()
+      ]);
+      
+      // If we have cached data, check if it's different
+      const tasksToUse = cachedTasks ? JSON.parse(cachedTasks) : fetchedTasks;
+      
       set({ 
-        tasks: parsedTasks, 
-        filteredTasks: parsedTasks 
+        tasks: tasksToUse,
+        users: fetchedUsers,
+        filteredTasks: tasksToUse,
+        isLoading: false,
+        isInitialized: true
       });
-    } else {
-      // If no localStorage data, use mock data
-      const initialTasks = mockData.tasks as Task[];
-      set({ 
-        tasks: initialTasks, 
-        filteredTasks: initialTasks 
-      });
+      
       // Save to localStorage
-      localStorage.setItem('kanban-tasks', JSON.stringify(initialTasks));
+      if (typeof window !== 'undefined' && !cachedTasks) {
+        localStorage.setItem('kanban-tasks', JSON.stringify(fetchedTasks));
+      }
+    } catch (error) {
+      set({ 
+        error: 'Failed to load tasks. Please refresh the page.',
+        isLoading: false 
+      });
+      console.error('Failed to initialize tasks:', error);
     }
   },
 
-  updateTaskStatus: (taskId: string, newStatus: TaskStatus) => {
+  updateTaskStatus: async (taskId: string, newStatus: TaskStatus) => {
+    const previousTasks = get().tasks;
+    
+    // Optimistic update
     set((state) => {
       const updatedTasks = state.tasks.map((task) =>
         task.id === taskId ? { ...task, status: newStatus } : task
       );
       
-      // Save to localStorage
-      localStorage.setItem('kanban-tasks', JSON.stringify(updatedTasks));
-      
-      // If there's a search query, filter the updated tasks
       const filtered = state.searchQuery 
         ? updatedTasks.filter(task => 
             task.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
@@ -62,11 +95,34 @@ const useTaskStore = create<TaskStore>((set, get) => ({
           )
         : updatedTasks;
       
+      // Save to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('kanban-tasks', JSON.stringify(updatedTasks));
+      }
+      
       return { 
         tasks: updatedTasks,
         filteredTasks: filtered 
       };
     });
+    
+    try {
+      // Call mock API
+      await api.updateTaskStatus(taskId, newStatus);
+    } catch (error) {
+      // Rollback on error
+      set((state) => ({
+        tasks: previousTasks,
+        filteredTasks: state.searchQuery 
+          ? previousTasks.filter(task => 
+              task.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+              task.description?.toLowerCase().includes(state.searchQuery.toLowerCase())
+            )
+          : previousTasks,
+        error: 'Failed to update task status'
+      }));
+      console.error('Failed to update task status:', error);
+    }
   },
 
   setSearchQuery: (query: string) => {
@@ -89,21 +145,27 @@ const useTaskStore = create<TaskStore>((set, get) => ({
     });
   },
 
-  reorderTasks: (tasks: Task[]) => {
+  reorderTasks: async (tasks: Task[]) => {
+    const previousTasks = get().tasks;
+    
+    // Optimistic update
     set({ tasks, filteredTasks: tasks });
-    localStorage.setItem('kanban-tasks', JSON.stringify(tasks));
-  },
-
-  saveToLocalStorage: () => {
-    const { tasks } = get();
-    localStorage.setItem('kanban-tasks', JSON.stringify(tasks));
-  },
-
-  loadFromLocalStorage: () => {
-    const stored = localStorage.getItem('kanban-tasks');
-    if (stored) {
-      const tasks = JSON.parse(stored);
-      set({ tasks, filteredTasks: tasks });
+    
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('kanban-tasks', JSON.stringify(tasks));
+    }
+    
+    try {
+      // Call mock API
+      await api.reorderTasks(tasks);
+    } catch (error) {
+      // Rollback on error
+      set({ 
+        tasks: previousTasks, 
+        filteredTasks: previousTasks,
+        error: 'Failed to reorder tasks'
+      });
+      console.error('Failed to reorder tasks:', error);
     }
   },
 }));

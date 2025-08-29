@@ -17,6 +17,7 @@ import TaskCard from './TaskCard';
 import useTaskStore from '@/store/useTaskStore';
 import { Task, TaskStatus } from '@/types';
 import { getTasksByStatus } from '@/lib/utils';
+import LoadingState from '@/components/ui/LoadingState';
 
 const KanbanBoard = () => {
   const { 
@@ -24,7 +25,9 @@ const KanbanBoard = () => {
     users, 
     updateTaskStatus, 
     reorderTasks,
-    initializeTasks
+    initializeTasks,
+    isLoading,
+    error
   } = useTaskStore();
   
   const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -41,14 +44,14 @@ const KanbanBoard = () => {
 
   useEffect(() => {
     initializeTasks();
-  }, [initializeTasks]);
+  }, []);
 
   const handleDragStart = (event: DragStartEvent) => {
     const task = filteredTasks.find(t => t.id === event.active.id);
     setActiveTask(task || null);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     
     if (!over) {
@@ -60,7 +63,7 @@ const KanbanBoard = () => {
     const overId = over.id as string;
 
     if (statuses.includes(overId as TaskStatus)) {
-      updateTaskStatus(taskId, overId as TaskStatus);
+      await updateTaskStatus(taskId, overId as TaskStatus);
     } else {
       const activeTask = filteredTasks.find(t => t.id === taskId);
       const overTask = filteredTasks.find(t => t.id === overId);
@@ -77,16 +80,36 @@ const KanbanBoard = () => {
               const reorderedTask = reorderedColumnTasks.find(t => t.id === task.id);
               return reorderedTask || task;
             });
-            reorderTasks(updatedTasks);
+            await reorderTasks(updatedTasks);
           }
         } else {
-          updateTaskStatus(taskId, overTask.status);
+          await updateTaskStatus(taskId, overTask.status);
         }
       }
     }
     
     setActiveTask(null);
   };
+
+  if (isLoading) {
+    return <LoadingState />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <p className="text-red-500 mb-2">⚠️ {error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <DndContext
