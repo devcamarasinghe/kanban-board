@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { Task, User, TaskStatus } from '@/types';
-import { api } from '@/lib/api';
+import { api } from '@/services';
 
 interface TaskStore {
   tasks: Task[];

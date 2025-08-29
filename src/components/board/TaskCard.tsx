@@ -28,7 +28,7 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
   };
 
   const taskUsers = users.filter(user => task.assignees.includes(user.id));
-  
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'text-red-500';
@@ -53,10 +53,16 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`bg-white rounded-lg p-4 shadow-sm border border-gray-100 cursor-move hover:shadow-md transition-all duration-200 ${
-        isDragging ? 'shadow-xl ring-2 ring-blue-400 ring-opacity-50 scale-105' : ''
-      }`}
+      className={`bg-white rounded-lg p-4 shadow-sm border border-gray-100 cursor-move hover:shadow-md transition-all duration-200 ${isDragging ? 'shadow-xl ring-2 ring-blue-400 ring-opacity-50 scale-105' : ''
+        }`}
     >
+
+      {process.env.NODE_ENV === 'development' && (
+        <div className="text-xs text-gray-400 mb-1">
+          Status: {task.status}
+        </div>
+      )}
+
       {/* Priority indicator */}
       <div className={`text-xs mb-2 ${getPriorityColor(task.priority)}`}>
         {getPriorityDots(task.priority)}
@@ -64,7 +70,7 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
 
       {/* Task Title */}
       <h3 className="font-medium text-gray-900 mb-2">{task.title}</h3>
-      
+
       {/* Task Description */}
       {task.description && (
         <p className="text-sm text-gray-600 mb-3 line-clamp-2">{task.description}</p>
@@ -104,7 +110,7 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
             <span className="text-gray-400">{Icons.comment}</span>
             <span>{task.comments}</span>
           </div>
-          
+
           {/* Attachments */}
           {task.attachments > 0 && (
             <div className="flex items-center gap-1">
