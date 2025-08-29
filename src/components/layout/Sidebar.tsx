@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LayoutDashboard, Trello, MessageCircle, Calendar, Users, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, KanbanSquare, MessageCircle, Calendar, Users, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
 
 interface NavItem {
   id: string;
@@ -16,7 +16,7 @@ const Sidebar = () => {
 
   const navItems: NavItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-    { id: 'boards', label: 'Boards', icon: <Trello size={20} />, isActive: true },
+    { id: 'boards', label: 'Boards', icon: <KanbanSquare size={20} />, isActive: true },
     { id: 'messages', label: 'Messages', icon: <MessageCircle size={20} />, hasNotification: true },
     { id: 'calendar', label: 'Calendar', icon: <Calendar size={20} /> },
     { id: 'team', label: 'Team members', icon: <Users size={20} /> },
