@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <div className="w-64 bg-white h-screen border-r border-gray-200 flex flex-col">
-      {/* Logo/Brand */}
+
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
@@ -34,7 +34,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Root folder selector */}
+
       <div className="px-4 py-3 border-b border-gray-200">
         <button className="w-full flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-colors">
           <div className="flex items-center gap-2">
@@ -49,18 +49,17 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* Navigation */}
+
       <nav className="flex-1 px-4 py-4">
         <div className="space-y-1">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveItem(item.id)}
-              className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
-                item.id === activeItem
+              className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${item.id === activeItem
                   ? 'bg-gray-100 text-gray-900 shadow-sm'
                   : 'text-gray-600 hover:bg-gray-50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3">
                 <span className={item.id === activeItem ? 'text-blue-500' : 'text-gray-500'}>
@@ -76,7 +75,7 @@ const Sidebar = () => {
         </div>
       </nav>
 
-      {/* Support section */}
+
       <div className="p-4 border-t border-gray-200">
         <button className="w-full flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
           <span className="text-gray-500">{Icons.support}</span>
@@ -84,7 +83,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* Logout */}
+
       <div className="p-4 border-t border-gray-200">
         <button className="w-full flex items-center gap-3 p-3 text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
           <span className="text-gray-700">{Icons.logout}</span>

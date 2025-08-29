@@ -63,15 +63,13 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
         </div>
       )}
 
-      {/* Priority indicator */}
+      {/* Task Priority indicator */}
       <div className={`text-xs mb-2 ${getPriorityColor(task.priority)}`}>
         {getPriorityDots(task.priority)}
       </div>
 
-      {/* Task Title */}
       <h3 className="font-medium text-gray-900 mb-2">{task.title}</h3>
 
-      {/* Task Description */}
       {task.description && (
         <p className="text-sm text-gray-600 mb-3 line-clamp-2">{task.description}</p>
       )}
@@ -102,16 +100,14 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
         </div>
       )}
 
-      {/* Task Meta */}
       <div className="flex items-center justify-between text-xs text-gray-500">
         <div className="flex items-center gap-3">
-          {/* Comments */}
+
           <div className="flex items-center gap-1">
             <span className="text-gray-400">{Icons.comment}</span>
             <span>{task.comments}</span>
           </div>
 
-          {/* Attachments */}
           {task.attachments > 0 && (
             <div className="flex items-center gap-1">
               <span className="text-gray-400">{Icons.attachment}</span>
@@ -120,7 +116,6 @@ const TaskCard = ({ task, users }: TaskCardProps) => {
           )}
         </div>
 
-        {/* Due Date */}
         {task.dueDate && (
           <span className="text-gray-400 flex items-center gap-1">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
