@@ -3,7 +3,7 @@ import { Task, User } from '@/types';
 // Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const api = {
+const api = {
   // Fetch all tasks (simulating GET /api/tasks)
   async fetchTasks(): Promise<Task[]> {
     try {
@@ -61,3 +61,5 @@ export const api = {
     }
   }
 };
+
+export { api };
